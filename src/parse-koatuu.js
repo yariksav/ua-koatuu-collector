@@ -74,6 +74,7 @@ const process = async (config = {}) => {
         case '0':
           if (name.startsWith('М.')) {
             name = ucFirstAllWords(name.replace('М.', ''))
+            type = 'М'
           }
           states[code.slice(0, 2)] = removeSlash(name).replace(' Область', '')
           break;

@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:koatuu": "node ./src/parse-koatuu.js",
-    "build:coords": "npm run build:koatuu && node ./src/parse-ua-coordinates.js",
+    "build:ua:koatuu": "node ./src/parse-koatuu.js",
+    "build:ua:coords": "node ./src/parse-ua-coordinates.js",
+    "build:ua:population": "node ./src/parse-ua-population.js",
+    "build:ua": "npm run build:ua:koatuu && npm run build:ua:coords && npm run build:ua:population",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

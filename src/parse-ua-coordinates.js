@@ -1,6 +1,7 @@
 const csv = require('csvtojson')
 const translit = require('./translit.js')
 
+const { uniq } = require('lodash')
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 const states = {
@@ -36,6 +37,7 @@ const states = {
 const suffixes = {
   'івка': 'овка',
   'ськ': 'ск',
+  'ьово': 'іово',
   'ове': 'ово',
   'ове': 'ова',
   'ськe': 'ское',
@@ -70,6 +72,7 @@ const process = async (config = {}) => {
         {id: 'Latitude', title: 'Latitude'},
         {id: 'Longitude', title: 'Longitude'},
         {id: 'Population', title: 'Population'},
+        {id: 'Indexes', title: 'Indexes'},
     ]
   });
 
@@ -112,6 +115,7 @@ const process = async (config = {}) => {
       translites.push(translit(name).toLowerCase().replace(/\-/g, ''))
       translites.push(translit(name, 'ru').toLowerCase().replace(/\-/g, ''))
     })
+    translites = uniq(translites)
 
     item.Latin = translit(name)
 
@@ -121,10 +125,12 @@ const process = async (config = {}) => {
       return translites.indexOf(item.Slug) >= 0 && +item.StateCode === +stateCode
     })
 
+    item.Indexes = translites.join('|')
     if (regions && regions.length) {
       item.Latitude = +regions.find(region => region.Latitude).Latitude
       item.Longitude = +regions.find(region => region.Longitude).Longitude
       item.Population = +((regions.find(region => region.Population) || {}).Population || 0)
+      // item.Indexes = uniq(regions.map(item => item.Slug)).join(' ')
       counts.success++
     } else {
       counts.notfound++
