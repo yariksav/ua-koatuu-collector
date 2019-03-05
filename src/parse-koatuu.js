@@ -76,7 +76,7 @@ const process = async (config = {}) => {
             name = ucFirstAllWords(name.replace('М.', ''))
             type = 'М'
           }
-          states[code.slice(0, 2)] = removeSlash(name).replace(' Область', '')
+          states[code.slice(0, 2)] = removeSlash(name).replace(/ область/ig, '')
           break;
         case '1':
           if (code[4] !== '0') {
@@ -84,7 +84,7 @@ const process = async (config = {}) => {
           }
           break;
         case '2': 
-          districts[codeFirst] = removeSlash(name).replace(' Район', '')
+          districts[codeFirst] = removeSlash(name).replace(/ район/ig, '')
           break;
       }
     }
